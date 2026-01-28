@@ -152,6 +152,7 @@ grpc_call_failed_before_recv_message_type grpc_call_failed_before_recv_message_i
 grpc_call_ref_type grpc_call_ref_import;
 grpc_call_unref_type grpc_call_unref_import;
 grpc_call_set_credentials_type grpc_call_set_credentials_import;
+grpc_call_context_set_telemetry_label_type grpc_call_context_set_telemetry_label_import;
 grpc_server_request_call_type grpc_server_request_call_import;
 grpc_server_register_method_type grpc_server_register_method_import;
 grpc_server_request_registered_call_type grpc_server_request_registered_call_import;
@@ -439,6 +440,7 @@ void grpc_rb_load_imports(HMODULE library) {
   grpc_call_ref_import = (grpc_call_ref_type) GetProcAddress(library, "grpc_call_ref");
   grpc_call_unref_import = (grpc_call_unref_type) GetProcAddress(library, "grpc_call_unref");
   grpc_call_set_credentials_import = (grpc_call_set_credentials_type) GetProcAddress(library, "grpc_call_set_credentials");
+  grpc_call_context_set_telemetry_label_import = (grpc_call_context_set_telemetry_label_type) GetProcAddress(library, "grpc_call_context_set_telemetry_label");
   grpc_server_request_call_import = (grpc_server_request_call_type) GetProcAddress(library, "grpc_server_request_call");
   grpc_server_register_method_import = (grpc_server_register_method_type) GetProcAddress(library, "grpc_server_register_method");
   grpc_server_request_registered_call_import = (grpc_server_request_registered_call_type) GetProcAddress(library, "grpc_server_request_registered_call");
