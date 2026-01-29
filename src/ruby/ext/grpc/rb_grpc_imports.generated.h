@@ -432,6 +432,9 @@ extern grpc_call_unref_type grpc_call_unref_import;
 typedef grpc_call_error(*grpc_call_set_credentials_type)(grpc_call* call, grpc_call_credentials* creds);
 extern grpc_call_set_credentials_type grpc_call_set_credentials_import;
 #define grpc_call_set_credentials grpc_call_set_credentials_import
+typedef void(*grpc_call_context_set_telemetry_label_type)(grpc_call* call, const char* label, size_t len);
+extern grpc_call_context_set_telemetry_label_type grpc_call_context_set_telemetry_label_import;
+#define grpc_call_context_set_telemetry_label grpc_call_context_set_telemetry_label_import
 typedef grpc_call_error(*grpc_server_request_call_type)(grpc_server* server, grpc_call** call, grpc_call_details* details, grpc_metadata_array* request_metadata, grpc_completion_queue* cq_bound_to_call, grpc_completion_queue* cq_for_notification, void* tag_new);
 extern grpc_server_request_call_type grpc_server_request_call_import;
 #define grpc_server_request_call grpc_server_request_call_import

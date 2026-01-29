@@ -129,6 +129,7 @@ EXPORTS
     grpc_call_ref
     grpc_call_unref
     grpc_call_set_credentials
+    grpc_call_context_set_telemetry_label
     grpc_server_request_call
     grpc_server_register_method
     grpc_server_request_registered_call

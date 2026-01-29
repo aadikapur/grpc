@@ -16,6 +16,7 @@
 #define GRPC_SRC_CORE_TELEMETRY_TELEMETRY_LABEL_H
 
 #include <string_view>
+
 #include "src/core/lib/resource_quota/arena.h"
 
 namespace grpc_core {
