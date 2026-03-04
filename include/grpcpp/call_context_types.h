@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GRPCPP_IMPL_CALL_CONTEXT_TYPES_H
-#define GRPCPP_IMPL_CALL_CONTEXT_TYPES_H
+#ifndef GRPCPP_CALL_CONTEXT_TYPES_H
+#define GRPCPP_CALL_CONTEXT_TYPES_H
 
 #include <grpc/context_types.h>
 #include <grpcpp/impl/call_context_registry.h>
@@ -30,4 +30,4 @@ struct impl::CallContextType<TelemetryLabel>
 
 }  // namespace grpc
 
-#endif  // GRPCPP_IMPL_CALL_CONTEXT_TYPES_H
+#endif  // GRPCPP_CALL_CONTEXT_TYPES_H
