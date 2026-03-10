@@ -133,8 +133,7 @@ class OpenTelemetryPluginImpl::KeyValueIterable
           if (!callback(
                   AbslStrViewToOpenTelemetryStrView(OptionalLabelKeyToString(
                       static_cast<grpc_core::ClientCallTracerInterface::
-                                      CallAttemptTracer::OptionalLabelKey>(
-                          i))),
+                                      CallAttemptTracer::OptionalLabelKey>(i))),
                   AbslStrViewToOpenTelemetryStrView(
                       optional_labels_[i].as_string_view()))) {
             return false;

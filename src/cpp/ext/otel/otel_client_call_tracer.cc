@@ -18,12 +18,12 @@
 
 #include "src/cpp/ext/otel/otel_client_call_tracer.h"
 
+#include <grpc/context_types.h>
 #include <grpc/status.h>
 #include <grpc/support/log.h>
 #include <grpc/support/port_platform.h>
 #include <grpc/support/time.h>
 #include <stdint.h>
-#include <grpc/context_types.h>
 
 #include <array>
 #include <functional>
@@ -122,8 +122,7 @@ OpenTelemetryPluginImpl::ClientCallTracerInterface::
         OpenTelemetryPluginImpl::ClientCallTracerInterface* const parent,
         uint64_t attempt_num, bool is_transparent_retry)
     : parent_(parent), start_time_(absl::Now()) {
-  optional_labels_[static_cast<size_t>(
-      OptionalLabelKey::kTelemetryLabel)] =
+  optional_labels_[static_cast<size_t>(OptionalLabelKey::kTelemetryLabel)] =
       parent_->optional_labels_[static_cast<size_t>(
           grpc_core::ClientCallTracerInterface::OptionalLabelKey::
               kTelemetryLabel)];
@@ -138,8 +137,7 @@ OpenTelemetryPluginImpl::ClientCallTracerInterface::
     parent_->otel_plugin_->client_.attempt.started->Add(
         1, KeyValueIterable(
                /*injected_labels_from_plugin_options=*/{}, additional_labels,
-               /*active_plugin_options_view=*/nullptr,
-               optional_labels_,
+               /*active_plugin_options_view=*/nullptr, optional_labels_,
                /*is_client=*/true, parent_->otel_plugin_));
   }
   if (parent_->otel_plugin_->tracer_ != nullptr) {
