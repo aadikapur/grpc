@@ -18,9 +18,9 @@
 
 #include "src/cpp/ext/otel/otel_plugin.h"
 
+#include <grpcpp/call_context_types.h>
 #include <grpcpp/ext/otel_plugin.h>
 #include <grpcpp/grpcpp.h>
-#include <grpcpp/call_context_types.h>
 
 #include <atomic>
 #include <chrono>
@@ -1349,14 +1349,18 @@ TEST_F(OpenTelemetryPluginEnd2EndTest, TelemetryLabelPropagation) {
   Init(std::move(
       Options()
           .set_metric_names({
-              grpc::OpenTelemetryPluginBuilder::kClientAttemptStartedInstrumentName,
-              grpc::OpenTelemetryPluginBuilder::kClientAttemptDurationInstrumentName,
+              grpc::OpenTelemetryPluginBuilder::
+                  kClientAttemptStartedInstrumentName,
+              grpc::OpenTelemetryPluginBuilder::
+                  kClientAttemptDurationInstrumentName,
               grpc::OpenTelemetryPluginBuilder::
                   kClientAttemptSentTotalCompressedMessageSizeInstrumentName,
               grpc::OpenTelemetryPluginBuilder::
                   kClientAttemptRcvdTotalCompressedMessageSizeInstrumentName,
-              grpc::OpenTelemetryPluginBuilder::kClientCallRetriesInstrumentName,
-              grpc::OpenTelemetryPluginBuilder::kClientCallRetryDelayInstrumentName,
+              grpc::OpenTelemetryPluginBuilder::
+                  kClientCallRetriesInstrumentName,
+              grpc::OpenTelemetryPluginBuilder::
+                  kClientCallRetryDelayInstrumentName,
           })
           .add_optional_label("grpc.client.call.custom")
           .set_service_config(
@@ -1377,7 +1381,8 @@ TEST_F(OpenTelemetryPluginEnd2EndTest, TelemetryLabelPropagation) {
   const std::string kTelemetryLabelValue = "test_label_value";
   {
     EchoRequest request;
-    request.mutable_param()->mutable_expected_error()->set_code(StatusCode::ABORTED);
+    request.mutable_param()->mutable_expected_error()->set_code(
+        StatusCode::ABORTED);
     request.set_message("foo");
     EchoResponse response;
     grpc::ClientContext context;
@@ -1419,7 +1424,8 @@ TEST_F(OpenTelemetryPluginEnd2EndTest, TelemetryLabelPropagation) {
         }
       }
     }
-    EXPECT_TRUE(found) << "Telemetry label not found for metric: " << metric_name;
+    EXPECT_TRUE(found) << "Telemetry label not found for metric: "
+                       << metric_name;
   }
 }
 
