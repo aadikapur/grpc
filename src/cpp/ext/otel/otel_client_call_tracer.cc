@@ -127,17 +127,21 @@ OpenTelemetryPluginImpl::ClientCallTracerInterface::
   if (parent_->otel_plugin_->client_.attempt.started != nullptr) {
     auto* label = parent->arena_->GetContext<grpc_core::TelemetryLabel>();
     std::string label_str = label == nullptr ? "" : label->value;
-    SetOptionalLabel(OptionalLabelKey::kTelemetryLabel, grpc_core::RefCountedStringValue(label_str));
-    const bool telemetry_label_enabled = parent->otel_plugin_->per_call_optional_label_bits_.test(
-    static_cast<size_t>(OptionalLabelKey::kTelemetryLabel));
-    std::array<std::pair<absl::string_view, absl::string_view>, 3>
-      labels  = {
-            {{OpenTelemetryMethodKey(), parent_->MethodForStats()},
-             {OpenTelemetryTargetKey(),
-              parent_->scope_config_->filtered_target()},
-            {telemetry_label_enabled ? OptionalLabelKeyToString(OptionalLabelKey::kTelemetryLabel) : "",
-              telemetry_label_enabled ? label->value : ""}}};
-    absl::Span<std::pair<absl::string_view, absl::string_view>> additional_labels = absl::MakeSpan(labels).subspan(0, telemetry_label_enabled ? 3 : 2);
+    SetOptionalLabel(OptionalLabelKey::kTelemetryLabel,
+                     grpc_core::RefCountedStringValue(label_str));
+    const bool telemetry_label_enabled =
+        parent->otel_plugin_->per_call_optional_label_bits_.test(
+            static_cast<size_t>(OptionalLabelKey::kTelemetryLabel));
+    std::array<std::pair<absl::string_view, absl::string_view>, 3> labels = {
+        {{OpenTelemetryMethodKey(), parent_->MethodForStats()},
+         {OpenTelemetryTargetKey(), parent_->scope_config_->filtered_target()},
+         {telemetry_label_enabled
+              ? OptionalLabelKeyToString(OptionalLabelKey::kTelemetryLabel)
+              : "",
+          telemetry_label_enabled ? label->value : ""}}};
+    absl::Span<std::pair<absl::string_view, absl::string_view>>
+        additional_labels =
+            absl::MakeSpan(labels).subspan(0, telemetry_label_enabled ? 3 : 2);
 
     // We might not have all the injected labels that we want at this point, so
     // avoid recording a subset of injected labels here.
@@ -497,12 +501,18 @@ OpenTelemetryPluginImpl::ClientCallTracerInterface::
                     opentelemetry::common::AttributeValue(
                         AbslStringViewToNoStdStringView(
                             scope_config_->filtered_target()))),
-              std::pair(AbslStringViewToNoStdStringView(OpenTelemetryCustomLabelKey()), opentelemetry::common::AttributeValue(
-                    AbslStringViewToNoStdStringView(label_str)))};
-  const bool telemetry_label_enabled = otel_plugin_->per_call_optional_label_bits_.test(
-    static_cast<size_t>(grpc_core::ClientCallTracerInterface::CallAttemptTracer::OptionalLabelKey::kTelemetryLabel));
-    absl::Span<std::pair<opentelemetry::nostd::string_view,
-                       opentelemetry::common::AttributeValue>> attributes = absl::MakeSpan(all_attributes).subspan(0, telemetry_label_enabled ? 3 : 2);
+          std::pair(
+              AbslStringViewToNoStdStringView(OpenTelemetryCustomLabelKey()),
+              opentelemetry::common::AttributeValue(
+                  AbslStringViewToNoStdStringView(label_str)))};
+  const bool telemetry_label_enabled =
+      otel_plugin_->per_call_optional_label_bits_.test(static_cast<size_t>(
+          grpc_core::ClientCallTracerInterface::CallAttemptTracer::
+              OptionalLabelKey::kTelemetryLabel));
+  absl::Span<std::pair<opentelemetry::nostd::string_view,
+                       opentelemetry::common::AttributeValue>>
+      attributes = absl::MakeSpan(all_attributes)
+                       .subspan(0, telemetry_label_enabled ? 3 : 2);
   if (otel_plugin_->client_.call.retries != nullptr && retries_ > 1) {
     otel_plugin_->client_.call.retries->Record(
         retries_ - 1, attributes, opentelemetry::context::Context{});
