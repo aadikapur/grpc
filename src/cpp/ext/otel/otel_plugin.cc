@@ -947,7 +947,8 @@ absl::string_view OpenTelemetryPluginImpl::OptionalLabelKeyToString(
 absl::string_view OpenTelemetryPluginImpl::CallOptionalLabelKeyToString(
     grpc_core::ClientCallTracerInterface::OptionalLabelKey key) {
   switch (key) {
-    case grpc_core::ClientCallTracerInterface::OptionalLabelKey::kTelemetryLabel:
+    case grpc_core::ClientCallTracerInterface::OptionalLabelKey::
+        kTelemetryLabel:
       return kTelemetryLabel;
     default:
       grpc_core::Crash("Illegal OptionalLabelKey index");
