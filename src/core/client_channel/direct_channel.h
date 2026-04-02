@@ -58,17 +58,16 @@ class DirectChannel final : public Channel {
   void Orphaned() override;
   void StartCall(UnstartedCallHandler unstarted_handler) override;
   bool IsLame() const override { return false; }
-  grpc_call* CreateCall(grpc_call* parent_call, uint32_t propagation_mask,
-                        grpc_completion_queue* cq,
-                        grpc_pollset_set* pollset_set_alternative, Slice path,
-                        std::optional<Slice> authority, Timestamp deadline,
-                        bool registered_method, absl::FunctionRef<void(Arena*)>
-                                                   arena_init_function) override;
+  grpc_call* CreateCall(
+      grpc_call* parent_call, uint32_t propagation_mask,
+      grpc_completion_queue* cq, grpc_pollset_set* pollset_set_alternative,
+      Slice path, std::optional<Slice> authority, Timestamp deadline,
+      bool registered_method,
+      absl::FunctionRef<void(Arena*)> arena_init_function) override;
   grpc_event_engine::experimental::EventEngine* event_engine() const override {
     return event_engine_.get();
   }
-  bool SupportsConnectivityWatcher() const override {
-    return false; }
+  bool SupportsConnectivityWatcher() const override { return false; }
   grpc_connectivity_state CheckConnectivityState(bool) override {
     Crash("CheckConnectivityState not supported");
   }
