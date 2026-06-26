@@ -1896,6 +1896,8 @@ grpc_cc_library(
     ],
     deps = [
         "arena",
+        "grpc_service_config",
+        "unique_type_name",
         "//:gpr",
         "//:grpc_public_hdrs",
     ],
@@ -5905,6 +5907,7 @@ grpc_cc_library(
     ],
     deps = [
         "channel_args",
+        "client_channel_internal_header",
         "closure",
         "connectivity_state",
         "delegating_helper",
@@ -5928,6 +5931,7 @@ grpc_cc_library(
         "slice_refcount",
         "status_helper",
         "sync",
+        "telemetry_label",
         "time",
         "upb_utils",
         "uuid_v4",
