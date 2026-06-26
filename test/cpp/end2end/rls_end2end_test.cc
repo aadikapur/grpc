@@ -1715,30 +1715,28 @@ TEST_F(RlsMetricsEnd2endTest, TelemetryLabelPropagated) {
                                          kServiceValue, kMethodValue, kTestKey))
           .Build());
 
-  rls_server_->service_.SetResponse(
-      BuildRlsRequest({{kTestKey, rls_target0}}),
-      BuildRlsResponse({rls_target0}));
-  
+  rls_server_->service_.SetResponse(BuildRlsRequest({{kTestKey, rls_target0}}),
+                                    BuildRlsResponse({rls_target0}));
+
   ClientContext context;
   RpcOptions().set_metadata({{"key1", rls_target0}}).SetupRpc(&context);
   context.SetContext(grpc::TelemetryLabel{"my_test_telemetry_label"});
-  
+
   EchoRequest request;
   request.set_message(kRequestMessage);
   EchoResponse response;
   auto status = stub_->Echo(&context, request, &response);
   EXPECT_TRUE(status.ok()) << status.error_message();
-  
+
   EXPECT_EQ(rls_server_->service_.request_count(), 1);
   EXPECT_EQ(backends_[0]->service_.request_count(), 1);
-  
+
   // Check exported metrics has the telemetry label
-  EXPECT_THAT(
-      stats_plugin_->GetUInt64CounterValue(
-          kMetricTargetPicks,
-          {target_uri_, rls_server_target_, rls_target0, "complete"},
-          {"my_test_telemetry_label"}),
-      ::testing::Optional(1));
+  EXPECT_THAT(stats_plugin_->GetUInt64CounterValue(
+                  kMetricTargetPicks,
+                  {target_uri_, rls_server_target_, rls_target0, "complete"},
+                  {"my_test_telemetry_label"}),
+              ::testing::Optional(1));
 }
 
 }  // namespace
