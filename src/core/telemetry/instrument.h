@@ -395,10 +395,10 @@ class InstrumentMetadata {
   struct DoubleGaugeShape {};
   struct IntGaugeShape {};
   struct UintGaugeShape {};
-  using HistogramShape = Int64HistogramBuckets;
+  using Int64HistogramShape = Int64HistogramBuckets;
   using DoubleHistogramShape = DoubleHistogramBuckets;
 
-  using Shape = std::variant<CounterShape, UpDownCounterShape, HistogramShape,
+  using Shape = std::variant<CounterShape, UpDownCounterShape, Int64HistogramShape,
                              DoubleHistogramShape, DoubleGaugeShape,
                              IntGaugeShape, UintGaugeShape>;
 
@@ -665,7 +665,7 @@ class QueryableDomain {
       absl::string_view unit);
   const InstrumentMetadata::Description* AllocateInt64Histogram(
       absl::string_view name, absl::string_view description,
-      absl::string_view unit, HistogramBuckets bounds);
+      absl::string_view unit, Int64HistogramBuckets bounds);
   const InstrumentMetadata::Description* AllocateDoubleHistogram(
       absl::string_view name, absl::string_view description,
       absl::string_view unit, DoubleHistogramBuckets bounds);
@@ -1252,10 +1252,10 @@ class InstrumentDomain {
   }
 
   template <typename Shape, typename... Args>
-  static auto RegisterHistogram(absl::string_view name,
+  static auto RegisterInt64Histogram(absl::string_view name,
                                 absl::string_view description,
                                 absl::string_view unit, Args&&... args) {
-    return Domain()->template RegisterHistogram<Shape>(
+    return Domain()->template RegisterInt64Histogram<Shape>(
         name, description, unit, std::forward<Args>(args)...);
   }
 
