@@ -113,7 +113,7 @@ std::string InstrumentLabelList::DebugString() const {
 
 namespace {
 struct Hook {
-  HistogramCollectionHook hook;
+  Int64HistogramCollectionHook hook;
   Hook* next;
 };
 struct DoubleHook {
@@ -125,7 +125,7 @@ std::atomic<Hook*> hooks = nullptr;
 std::atomic<DoubleHook*> double_hooks = nullptr;
 }  // namespace
 
-void RegisterHistogramCollectionHook(HistogramCollectionHook hook) {
+void RegisterInt64HistogramCollectionHook(Int64HistogramCollectionHook hook) {
   Hook* new_hook =
       new Hook{std::move(hook), hooks.load(std::memory_order_acquire)};
   while (!hooks.compare_exchange_weak(new_hook->next, new_hook,
@@ -143,7 +143,7 @@ void RegisterDoubleHistogramCollectionHook(DoubleHistogramCollectionHook hook) {
 
 namespace instrument_detail {
 
-void CallHistogramCollectionHooks(
+void CallInt64HistogramCollectionHooks(
     const InstrumentMetadata::Description* instrument,
     absl::Span<const std::string> labels, int64_t value) {
   Hook* hook = hooks.load(std::memory_order_acquire);
@@ -382,12 +382,12 @@ void MetricsQuery::Run(RefCountedPtr<CollectionScope> scope,
                                        storage->SumCounter(metric->offset));
                   },
                   [metric, &sink, storage, &label_values,
-                   &label_keys](InstrumentMetadata::HistogramShape bounds) {
+                   &label_keys](InstrumentMetadata::Int64HistogramShape bounds) {
                     std::vector<uint64_t> counts(bounds.size());
                     for (size_t i = 0; i < bounds.size(); ++i) {
                       counts[i] = storage->SumCounter(metric->offset + i);
                     }
-                    sink.Histogram(label_keys, label_values, metric->name,
+                    sink.Int64Histogram(label_keys, label_values, metric->name,
                                    bounds, counts);
                   },
                   [metric, &sink, storage, &label_values, &label_keys](
