@@ -139,11 +139,13 @@ class ExponentialInt64HistogramShape {
     GRPC_CHECK_EQ(bounds_.size(), buckets);
   }
 
-  ExponentialInt64HistogramShape(const ExponentialInt64HistogramShape&) = delete;
-  ExponentialInt64HistogramShape& operator=(const ExponentialInt64HistogramShape&) =
+  ExponentialInt64HistogramShape(const ExponentialInt64HistogramShape&) =
       delete;
+  ExponentialInt64HistogramShape& operator=(
+      const ExponentialInt64HistogramShape&) = delete;
   ExponentialInt64HistogramShape(ExponentialInt64HistogramShape&&) = default;
-  ExponentialInt64HistogramShape& operator=(ExponentialInt64HistogramShape&&) = default;
+  ExponentialInt64HistogramShape& operator=(ExponentialInt64HistogramShape&&) =
+      default;
 
   size_t buckets() const { return bounds_.size(); }
   size_t BucketFor(int64_t value) const {
