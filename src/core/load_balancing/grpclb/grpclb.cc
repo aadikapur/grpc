@@ -1388,7 +1388,8 @@ ChannelArgs BuildBalancerChannelArgs(
   const grpc_channel_args* child_args =
       args.GetPointer<grpc_channel_args>(GRPC_ARG_CHILD_CHANNEL_ARGS);
   if (child_args != nullptr) {
-    grpclb_channel_args = ChannelArgs::FromC(child_args).UnionWith(grpclb_channel_args);
+    grpclb_channel_args =
+        ChannelArgs::FromC(child_args).UnionWith(grpclb_channel_args);
   }
 
   return grpclb_channel_args

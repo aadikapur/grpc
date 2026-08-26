@@ -23,8 +23,9 @@
 #include <grpcpp/server_builder.h>
 #include <grpcpp/support/channel_arguments.h>
 #include <grpcpp/support/config.h>
-#include <functional>
 #include <sys/socket.h>
+
+#include <functional>
 
 #include "src/core/util/notification.h"
 #include "src/proto/grpc/testing/echo.grpc.pb.h"
@@ -89,7 +90,6 @@ TEST_F(ServerBuilderTest, CreateServerRepeatedPortWithDisallowedReusePort) {
             nullptr);
 }
 
-
 class TestServerBuilder : public ServerBuilder {
  public:
   ChannelArguments BuildChannelArgsForTest() { return BuildChannelArgs(); }
@@ -135,7 +135,6 @@ TEST_F(ServerBuilderTest, SetChildChannelArgs) {
   }
   EXPECT_TRUE(found_child_args);
 }
-
 
 TEST_F(ServerBuilderTest, AddPassiveListener) {
   std::unique_ptr<experimental::PassiveListener> passive_listener;
