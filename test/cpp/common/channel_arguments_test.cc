@@ -275,18 +275,17 @@ TEST_F(ChannelArgumentsTest, SetEventEngine) {
           .ContainsObject<grpc_event_engine::experimental::EventEngine>());
 }
 
-
 TEST_F(ChannelArgumentsTest, SetChildChannelArgs) {
   VerifyDefaultChannelArgs();
-  
+
   ChannelArguments child_args;
   child_args.SetInt("child_key", 42);
-  
+
   channel_args_.SetChildChannelArgs(child_args);
-  
+
   grpc_channel_args args;
   channel_args_.SetChannelArgs(&args);
-  
+
   // Verify the child channel args pointer exists in the parent args.
   bool found = false;
   for (size_t i = 0; i < args.num_args; i++) {
@@ -296,15 +295,16 @@ TEST_F(ChannelArgumentsTest, SetChildChannelArgs) {
     }
   }
   EXPECT_TRUE(found);
-  
+
   const grpc_channel_args* extracted_child_args =
       grpc_channel_args_find_pointer<grpc_channel_args>(
           &args, GRPC_ARG_CHILD_CHANNEL_ARGS);
-          
+
   ASSERT_NE(extracted_child_args, nullptr);
-  
-  // The default ChannelArguments constructor inherently adds grpc.primary_user_agent
-  // resulting in 2 arguments: the implicit user agent and our explicit 'child_key'.
+
+  // The default ChannelArguments constructor inherently adds
+  // grpc.primary_user_agent resulting in 2 arguments: the implicit user agent
+  // and our explicit 'child_key'.
   EXPECT_EQ(extracted_child_args->num_args, 2);
   bool found_child = false;
   for (size_t i = 0; i < extracted_child_args->num_args; ++i) {
@@ -319,7 +319,6 @@ TEST_F(ChannelArgumentsTest, SetChildChannelArgs) {
 
 }  // namespace testing
 }  // namespace grpc
-
 
 int main(int argc, char** argv) {
   grpc::testing::TestEnvironment env(&argc, argv);
