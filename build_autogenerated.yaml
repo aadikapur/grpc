@@ -17008,9 +17008,11 @@ targets:
   gtest: true
   build: test
   language: c++
-  headers: []
+  headers:
+  - test/core/test_util/fake_stats_plugin.h
   src:
   - test/core/telemetry/instrument_test.cc
+  - test/core/test_util/fake_stats_plugin.cc
   - third_party/googletest/googlemock/src/gmock_main.cc
   deps:
   - gtest
